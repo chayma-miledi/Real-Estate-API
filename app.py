@@ -5,11 +5,11 @@ from datetime import timedelta
 
 from security import authenticate, identity
 from resources.user import UserRegister
-from resources.agent import Agent, AgentList
-from resources.property import Property, PropertyList
+from resources.property import Property, PropertyList, PropertyID, PropertyListLocation, PropertyListLocationPrice, PropertyListPrice, PropertyReview
 from db import db
 
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
 app.secret_key = 'chayma'
@@ -19,10 +19,11 @@ api = Api(app)
 def create_tables():
     db.create_all()
 
+#Change the by default '/auth to /login
 app.config['JWT_AUTH_URL_RULE'] = '/login'
 jwt = JWT(app, authenticate, identity) #/auth
 
-# config JWT to expire within half an hour
+#Configure JWT to expire within half an hour
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
 
 @jwt.auth_response_handler
@@ -42,10 +43,13 @@ def customized_error_handler(error):
         'code': error.status_code
         }), error.status_code
 
-api.add_resource(Property, '/property')
-api.add_resource(Agent, '/agent/<string:full_name>')
-api.add_resource(AgentList, '/agents')
+api.add_resource(Property, '/property/')
+api.add_resource(PropertyID, '/property/<int:id>')
+api.add_resource(PropertyReview, '/property/review/<int:id>')
 api.add_resource(PropertyList, '/properties')
+api.add_resource(PropertyListLocation, '/properties/location/<string:location>')
+api.add_resource(PropertyListPrice, '/properties/price')
+api.add_resource(PropertyListLocationPrice, '/properties/location/price')
 api.add_resource(UserRegister, '/register')
 
 if __name__ == '__main__':

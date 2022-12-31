@@ -1,9 +1,10 @@
 flask
 flask_restful
-flask_jwt
+flask-pyjwt
 python-dotenv
 marshmallow
 SQLAlchemy 
 Flask-SQLAlchemy
 datetime
+flask_smorest
 #gunicorn
