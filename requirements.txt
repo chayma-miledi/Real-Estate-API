@@ -1,0 +1,9 @@
+flask
+flask_restful
+flask_jwt
+python-dotenv
+marshmallow
+SQLAlchemy 
+Flask-SQLAlchemy
+datetime
+#gunicorn
