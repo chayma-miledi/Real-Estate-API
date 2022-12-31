@@ -64,6 +64,7 @@ class Property(Resource):
         required=False,
         help="This field cannot be left blank")    
 
+    @jwt_required()
     #Create a property
     def post(self):
         data = Property.parser.parse_args()
@@ -79,7 +80,7 @@ class Property(Resource):
 
 
 class PropertyID(Resource):
-
+    @jwt_required()
     #Get a specific property by id
     def get(self, id):
         property = PropertyModel.query.filter_by(id=id).first()
@@ -87,6 +88,7 @@ class PropertyID(Resource):
             return property.json(), 201  
         return {'message': 'Property not found'}, 404
 
+    @jwt_required()
     #Delete an existing property
     def delete(self, id):
         property = PropertyModel.query.filter_by(id=id).first()
@@ -95,6 +97,7 @@ class PropertyID(Resource):
             return {'message': 'Property deleted'}
         return {'message': 'Property not found'}, 404
 
+    @jwt_required()
     #Update a specific property
     def put(self, id):
         data = Property.parser.parse_args()
@@ -121,6 +124,8 @@ class PropertyID(Resource):
 
 
 class PropertyReview(Resource):
+
+    @jwt_required()
     #Update/Post a Review on a specific Property
     def put(self, id):
         data = request.get_json()
